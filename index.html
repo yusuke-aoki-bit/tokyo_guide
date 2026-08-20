@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>東京 甘い物と歴史的建築のマップ</title>
+<meta name="description" content="東京23区を「甘い物」と「歴史的建築」の重なりで歩くガイド。8エリア別に、重要文化財・国宝・世界遺産の建物と、100年続く菓子舗を組み合わせました。">
+<style>
+:root{
+  --ink:#221f1c; --ink2:#4a453e; --ink3:#847c70;
+  --line:#e6e2d8; --bg:#fbf9f4; --card:#fff;
+  --sumi:#2e2a25;
+  --bld:#3a5a8a; --bld-bg:#eef2f8;
+  --swt:#b0567a; --swt-bg:#fbeff4;
+  --gold:#8a5a2b; --gold-bg:#fbf4e8;
+  --red:#a8443a; --red-bg:#fbeeec;
+  --grn:#5d7a55; --grn-bg:#eff4ec;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Noto Sans CJK JP","Yu Gothic",sans-serif,"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji";
+  line-height:1.85;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px 80px}
+header{background:linear-gradient(155deg,#241f1b 0%,#4a3a30 40%,#8a5a4a 72%,#d4a58a 100%);
+  color:#fff;padding:54px 18px 46px;margin-bottom:28px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-70px;bottom:-90px;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,220,180,.26),transparent 68%)}
+header .inner{max-width:860px;margin:0 auto;position:relative;z-index:1}
+.eyebrow{font-size:12px;letter-spacing:.3em;color:#f2ceae;font-weight:700;margin-bottom:14px}
+h1{margin:0 0 14px;font-size:30px;line-height:1.38;font-weight:800}
+.lede{color:#eadfd4;font-size:15px;margin:0;max-width:680px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.meta span{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:5px 14px;font-size:13px}
+h2{font-size:20px;margin:52px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--sumi);display:flex;align-items:center;gap:10px}
+h2 .n{background:var(--sumi);color:#fff;min-width:26px;height:26px;padding:0 7px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;flex:none}
+h3{font-size:17px;margin:30px 0 10px}
+p{margin:0 0 14px}
+.desc{font-size:14.5px;color:var(--ink2)}
+.desc b{color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:16px 0}
+.mapwrap{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:18px 0}
+.mapwrap svg{display:block;border-radius:9px}
+.frame{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.fr{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 16px}
+.fr b{display:block;font-size:15px;margin-bottom:4px;color:var(--sumi)}
+.fr span{font-size:13.3px;color:var(--ink2)}
+@media(max-width:640px){.frame{grid-template-columns:1fr}}
+.area{border:1px solid var(--line);border-radius:14px;background:#fff;margin:22px 0;overflow:hidden}
+.area .hd{background:var(--gold-bg);border-bottom:1px solid #ecdfc6;padding:14px 20px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.area .hd .num{background:var(--gold);color:#fff;width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex:none}
+.area .hd b{font-size:18px}
+.area .hd span{font-size:12.5px;color:#8a7a5a;margin-left:auto}
+.area .bd{padding:6px 20px 16px}
+.grp{margin:14px 0 0}
+.grp .gh{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.1em;padding:3px 11px;border-radius:6px;margin-bottom:6px}
+.gh-b{background:var(--bld-bg);color:var(--bld)}
+.gh-s{background:var(--swt-bg);color:var(--swt)}
+.it{border-top:1px dashed var(--line);padding:11px 0 2px}
+.it:first-of-type{border-top:none}
+.it .nm{font-size:15.5px;font-weight:700}
+.it .tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;margin-left:8px;vertical-align:2px}
+.t-kok{background:#fdf0d8;color:#8a6112}
+.t-jyu{background:var(--bld-bg);color:var(--bld)}
+.t-sek{background:#e8f0e6;color:#476b3d}
+.t-tok{background:#f0ecf6;color:#65538a}
+.t-tou{background:#f5eee6;color:#8a6a4a}
+.it p{font-size:14px;color:var(--ink2);margin:5px 0 0}
+.info{font-size:12.8px;color:var(--ink3);margin-top:4px}
+.info b{color:#5d564c}
+.note{background:var(--grn-bg);border:1px solid #cfdfc9;border-radius:9px;padding:10px 14px;font-size:13.5px;color:#33502c;margin:10px 0}
+.myth{background:var(--gold-bg);border:1px solid #ebdcbc;border-radius:9px;padding:10px 14px;font-size:13.5px;color:#75581c;margin:10px 0}
+.fact{background:var(--bld-bg);border:1px solid #cdd9e9;border-radius:9px;padding:10px 14px;font-size:13.5px;color:#2c4666;margin:10px 0}
+.warn{background:var(--red-bg);border:1px solid #eeccc7;border-radius:9px;padding:10px 14px;font-size:13.5px;color:#8a3128;margin:10px 0}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;min-width:520px}
+th{background:#f0ede4;text-align:left;padding:10px 12px;font-weight:700;border-bottom:2px solid var(--line);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.pick{background:#fdfbf4}
+.pick td:first-child{font-weight:700}
+ul.pl{padding-left:1.2em;font-size:14.5px;color:var(--ink2)}
+ul.pl li{margin-bottom:7px}
+ul.pl b{color:var(--ink)}
+footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3)}
+footer a{color:var(--ink3)}
+.src{columns:2;column-gap:22px;font-size:11.5px;line-height:1.75}
+@media(max-width:640px){.src{columns:1}h1{font-size:24px}header{padding:38px 18px 34px}}
+@page{size:A4;margin:10mm}
+@media print{
+  html,body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:100%;padding:0 4px 0}
+  header{margin-bottom:22px;padding:34px 18px 30px;border-radius:0}
+  header .inner{max-width:100%}
+  .card,.it,.note,.myth,.fact,.warn,.fr,h2,h3,tr,.mapwrap,.area .hd{break-inside:avoid;page-break-inside:avoid}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  .area .hd{break-after:avoid;page-break-after:avoid}
+  .tw{overflow:visible}
+  table{min-width:0;width:100%;font-size:12.5px}
+  th,td{padding:7px 9px}
+  .mapwrap{padding:6px}
+  footer{break-inside:avoid}
+  a{text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <div class="eyebrow">TOKYO · 甘い物 × 歴史的建築</div>
+    <h1>東京、甘い物と<br>古い建物のマップ</h1>
+    <p class="lede">この2つは、東京では<b>だいたい同じ場所にあります</b>。明治〜昭和初期の建築が残っているのは、戦災を免れた一角か、建て替えの手が入らなかった街。そういう場所には、たいてい100年続く菓子屋も生き残っています。<b>建物を見て、そのまま甘い物を食べる</b>ための8エリアです。</p>
+    <div class="meta">
+      <span>8エリア</span>
+      <span>国宝1・重要文化財12・世界遺産1</span>
+      <span>創業100年超の菓子舗9軒</span>
+      <span>2026年8月時点</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="warn" style="font-size:14.5px;margin-top:0">
+<b>⚠ 先に、ガイドブックによく残っている「もう無い店」</b><br>
+<b>銀座若松</b>（あんみつ発祥・1894年創業）は<b>2023年12月30日に閉店</b>しました。入居していた銀座コアが建て替えになったためで、移転・再開の情報は2026年8月現在ありません。<br>
+浅草の<b>アンヂェラス</b>（1946年創業）も<b>2019年3月17日に閉店</b>済みです。<br>
+どちらもネット上には記事が大量に残っているので、行く前に必ず現況を確認してください。
+</div>
+
+<h2><span class="n">1</span>この地図の考え方</h2>
+<div class="frame">
+  <div class="fr"><b>建物が残る場所には、菓子屋も残る</b><span>戦災を免れた神田須田町、建て替えが進まなかった谷中や麻布十番。<b>建築と菓子舗の生存条件はほぼ同じ</b>です</span></div>
+  <div class="fr"><b>だから「ついで」で回れる</b><span>迎賓館（国宝）とたい焼きの名店が同じ四ツ谷、ライトの明日館と三大豆大福が同じ護国寺・目白 ── そういう組み合わせだけを選びました</span></div>
+  <div class="fr"><b>甘い物は早じまいが多い</b><span>豆大福は<b>午前中に完売</b>、たい焼きは<b>売り切れ次第終了</b>。建物より先に甘い物の時間を決めるのが正解です</span></div>
+</div>
+
+<h2><span class="n">2</span>地図</h2>
+<div class="mapwrap">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 992" width="100%" role="img" aria-label="東京 甘味と建築のマップ">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf9f4"/><stop offset="1" stop-color="#f1eee5"/></linearGradient></defs>
+<rect width="920" height="992" rx="14" fill="url(#bg)"/>
+<path d="M626,136 L660,265 L682,350 L642,473 L600,584 L563,707" stroke="#c3dae8" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="678" y="408" font-size="10.5" fill="#6f9db8" font-weight="700">隅田川</text>
+<ellipse cx="414" cy="543" rx="46" ry="40" fill="#e2ebdd" stroke="#c3d3bc" stroke-width="1.6"/>
+<text x="414" y="547" text-anchor="middle" font-size="11" font-weight="800" fill="#6d8163">皇居</text>
+<path d="M490,569 L542,358 L510,266 L349,241 L193,256 L138,512 L144,720 L340,911 L436,738 L443,669 L490,569" stroke="#8fa96e" stroke-width="3.4" fill="none" stroke-linejoin="round" opacity=".72"/>
+<circle cx="193" cy="256" r="4.6" fill="#fff" stroke="#7d9760" stroke-width="2.4"/>
+<text x="179" y="248" text-anchor="end" font-size="10.2" fill="#6f8557" font-weight="700">池袋</text>
+<circle cx="138" cy="512" r="4.6" fill="#fff" stroke="#7d9760" stroke-width="2.4"/>
+<text x="124" y="512" text-anchor="end" font-size="10.2" fill="#6f8557" font-weight="700">新宿</text>
+<circle cx="144" cy="720" r="4.6" fill="#fff" stroke="#7d9760" stroke-width="2.4"/>
+<text x="130" y="724" text-anchor="end" font-size="10.2" fill="#6f8557" font-weight="700">渋谷</text>
+<circle cx="340" cy="911" r="4.6" fill="#fff" stroke="#7d9760" stroke-width="2.4"/>
+<text x="336" y="931" text-anchor="middle" font-size="10.2" fill="#6f8557" font-weight="700">品川</text>
+<circle cx="490" cy="569" r="4.6" fill="#fff" stroke="#7d9760" stroke-width="2.4"/>
+<text x="504" y="559" text-anchor="start" font-size="10.2" fill="#6f8557" font-weight="700">東京</text>
+<circle cx="542" cy="358" r="4.6" fill="#fff" stroke="#7d9760" stroke-width="2.4"/>
+<text x="558" y="356" text-anchor="start" font-size="10.2" fill="#6f8557" font-weight="700">上野</text>
+<text x="231" y="221" text-anchor="middle" font-size="10" fill="#7d9760" font-weight="800">山手線</text>
+<line x1="510" y1="559" x2="510" y2="525" stroke="#8a5a2b" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity=".5"/>
+<text x="510" y="525" text-anchor="middle" font-size="13.5" font-weight="800" fill="#221f1c">丸の内・日本橋</text>
+<text x="510" y="540" text-anchor="middle" font-size="10.4" fill="#7a7166">近代建築の最高密度 × 江戸の菓子舗</text>
+<line x1="488" y1="468" x2="504" y2="462" stroke="#8a5a2b" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity=".5"/>
+<text x="504" y="462" text-anchor="start" font-size="13.5" font-weight="800" fill="#221f1c">神田・御茶ノ水</text>
+<text x="504" y="477" text-anchor="start" font-size="10.4" fill="#7a7166">戦災を免れた木造 × 揚げまんじゅう</text>
+<line x1="530" y1="353" x2="513" y2="349" stroke="#8a5a2b" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity=".5"/>
+<text x="513" y="349" text-anchor="end" font-size="13.5" font-weight="800" fill="#221f1c">上野・谷中</text>
+<text x="513" y="364" text-anchor="end" font-size="10.4" fill="#7a7166">世界遺産 × どら焼き</text>
+<line x1="648" y1="353" x2="666" y2="349" stroke="#8a5a2b" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity=".5"/>
+<text x="666" y="349" text-anchor="start" font-size="13.5" font-weight="800" fill="#221f1c">浅草・向島</text>
+<text x="666" y="364" text-anchor="start" font-size="10.4" fill="#7a7166">江戸唯一の門 × 芋ようかん</text>
+<line x1="488" y1="650" x2="502" y2="664" stroke="#8a5a2b" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity=".5"/>
+<text x="502" y="664" text-anchor="start" font-size="13.5" font-weight="800" fill="#221f1c">銀座・築地</text>
+<text x="502" y="679" text-anchor="start" font-size="10.4" fill="#7a7166">伊東忠太の本堂 × あんぱん発祥</text>
+<line x1="290" y1="563" x2="274" y2="557" stroke="#8a5a2b" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity=".5"/>
+<text x="274" y="557" text-anchor="end" font-size="13.5" font-weight="800" fill="#221f1c">四谷・赤坂</text>
+<text x="274" y="572" text-anchor="end" font-size="10.4" fill="#7a7166">国宝の迎賓館 × たい焼き御三家</text>
+<line x1="286" y1="791" x2="270" y2="795" stroke="#8a5a2b" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity=".5"/>
+<text x="270" y="795" text-anchor="end" font-size="13.5" font-weight="800" fill="#221f1c">麻布・白金台</text>
+<text x="270" y="810" text-anchor="end" font-size="10.4" fill="#7a7166">アール・デコ × 豆大福とたい焼き</text>
+<line x1="209" y1="293" x2="192" y2="311" stroke="#8a5a2b" stroke-width="1.1" stroke-dasharray="2.5 2.5" opacity=".5"/>
+<text x="192" y="311" text-anchor="end" font-size="13.5" font-weight="800" fill="#221f1c">目白・護国寺</text>
+<text x="192" y="326" text-anchor="end" font-size="10.4" fill="#7a7166">ライトの明日館 × 三大豆大福</text>
+<circle cx="510" cy="559" r="15" fill="#8a5a2b" stroke="#fff" stroke-width="2.6"/><text x="510" y="564" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff">1</text>
+<circle cx="488" cy="468" r="15" fill="#8a5a2b" stroke="#fff" stroke-width="2.6"/><text x="488" y="473" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff">2</text>
+<circle cx="530" cy="353" r="15" fill="#8a5a2b" stroke="#fff" stroke-width="2.6"/><text x="530" y="358" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff">3</text>
+<circle cx="648" cy="353" r="15" fill="#8a5a2b" stroke="#fff" stroke-width="2.6"/><text x="648" y="358" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff">4</text>
+<circle cx="488" cy="650" r="15" fill="#8a5a2b" stroke="#fff" stroke-width="2.6"/><text x="488" y="655" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff">5</text>
+<circle cx="290" cy="563" r="15" fill="#8a5a2b" stroke="#fff" stroke-width="2.6"/><text x="290" y="568" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff">6</text>
+<circle cx="286" cy="791" r="15" fill="#8a5a2b" stroke="#fff" stroke-width="2.6"/><text x="286" y="796" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff">7</text>
+<circle cx="209" cy="293" r="15" fill="#8a5a2b" stroke="#fff" stroke-width="2.6"/><text x="209" y="298" text-anchor="middle" font-size="13.5" font-weight="800" fill="#fff">8</text>
+<circle cx="400" cy="199" r="7" fill="none" stroke="#b0567a" stroke-width="2.4"/>
+<text x="400" y="175" text-anchor="middle" font-size="11.5" font-weight="700" fill="#221f1c">旧古河庭園</text>
+<text x="400" y="188" text-anchor="middle" font-size="9.6" fill="#7a7166">コンドル・駒込</text>
+<circle cx="774" cy="445" r="7" fill="none" stroke="#b0567a" stroke-width="2.4"/>
+<text x="768" y="423" text-anchor="middle" font-size="11.5" font-weight="700" fill="#221f1c">船橋屋</text>
+<text x="768" y="436" text-anchor="middle" font-size="9.6" fill="#7a7166">くず餅・亀戸天神前</text>
+<circle cx="180" cy="668" r="7" fill="none" stroke="#b0567a" stroke-width="2.4"/>
+<text x="166" y="672" text-anchor="end" font-size="11.5" font-weight="700" fill="#221f1c">瑞穂</text>
+<text x="166" y="685" text-anchor="end" font-size="9.6" fill="#7a7166">豆大福・原宿</text>
+<text x="34" y="46" font-size="18" font-weight="800" fill="#221f1c">東京 ── 甘い物と歴史的建築は、だいたい同じ場所にあります</text>
+<text x="34" y="70" font-size="12" fill="#6b6558">明治〜昭和初期の建築が残るのは、戦災を免れた一角か、建て替えの手が入らなかった街。そういう場所には、たいてい100年続く菓子屋も残っています。</text>
+<text x="34" y="90" font-size="12" fill="#6b6558">この地図の8エリアは、<tspan font-weight="800" fill="#8a5a2b">「建物」と「甘い物」が徒歩圏で重なる</tspan>ところだけを選んでいます。</text>
+<text x="34" y="118" font-size="10.6" fill="#9a9184">緑の輪は山手線。中央の緑は皇居。右の水色は隅田川。</text>
+<g transform="translate(878,50)"><path d="M0,-17 L6,8 L0,3 L-6,8 Z" fill="#221f1c" opacity=".42"/><text x="0" y="23" text-anchor="middle" font-size="10" font-weight="800" fill="#221f1c" opacity=".42">N</text></g>
+<text x="34" y="974" font-size="10" fill="#a8a094">実際の緯度経度をもとに配置していますが、路線・河川は簡略化した模式図です</text>
+</svg>
+</div>
+
+<h2><span class="n">3</span>エリア別ガイド</h2>
+
+<div class="area">
+  <div class="hd"><span class="num">1</span><b>丸の内・日本橋</b><span>近代建築の最高密度 × 江戸の菓子舗</span></div>
+  <div class="bd">
+    <p class="desc">日本でいちばん濃い近代建築エリアです。<b>東京駅を中心に、皇居側（西）が丸の内のオフィス建築群、日本橋側（東北）が金融街の重要文化財4件</b>という二極構造。両ブロックの間は徒歩10分ほどで、全部で2.5kmくらいです。</p>
+    <div class="grp"><span class="gh gh-b">建物</span>
+      <div class="it"><span class="nm">東京駅 丸の内駅舎</span><span class="tag t-jyu">重要文化財</span>
+      <p><b>1914年・辰野金吾</b>。2012年に戦災で失われた3階部分を復原し、免震工法を入れています（重文指定は2003年）。</p>
+      <div class="info">南北ドームの天井の十二支は<b>8支しかありません</b>。子・卯・午・酉が欠けていて、これは方角を司る干支として意図的に外されたとされます。両翼2.1mの大鷲のレリーフも8羽。<b>見学無料</b></div></div>
+      <div class="it"><span class="nm">明治生命館</span><span class="tag t-jyu">重要文化財</span>
+      <p><b>1934年・岡田信一郎</b>。<b>昭和期の建造物として初の重要文化財</b>（1997年）です。2階の会議室は<b>GHQ対日理事会の会場</b>で、マッカーサーも訪れた部屋。</p>
+      <div class="info"><b>入館無料・9:30〜19:00・月曜休</b>。2025年11月のリニューアルで、以前の「土日のみ公開」からほぼ通年公開になりました（古い情報に注意）</div></div>
+      <div class="it"><span class="nm">三菱一号館</span>
+      <p><b>1894年ジョサイア・コンドル → 2009年復元</b>。ここは<b>文化財に指定されていません</b>。1968年に一度解体され、今の建物は2009年竣工の新築だからです。「復元されたら文化財ではない」という制度の線引きが分かる例。</p>
+      <div class="info">2023年4月から長期休館していましたが<b>2024年11月23日に再開館</b>。10:00〜18:00（金・第2水は20:00）、月曜休。中庭は無料開放</div></div>
+      <div class="it"><span class="nm">日本銀行 本店本館</span><span class="tag t-jyu">重要文化財</span>
+      <p><b>1896年・辰野金吾</b>（重文1974年）。ベルギー国立銀行とイングランド銀行を参考にした設計です。</p>
+      <div class="info"><b>見学は無料・完全予約制</b>。<a href="https://bojtour.rsvsys.jp/">bojtour.rsvsys.jp</a> から<b>希望日の90日前10:00に先着受付</b>。約1時間、地下金庫と旧営業場を案内。<b>小学5年生以上</b></div>
+      <div class="myth">「上空から見ると<b>円</b>の字に見える」という有名な話は、<b>日銀公式サイトに記述がありません</b>。設計当時の通貨表記は旧字の「圓」だったため、偶然とする説が有力です</div></div>
+      <div class="it"><span class="nm">日本橋・三井本館・日本橋三越本店</span><span class="tag t-jyu">すべて重要文化財</span>
+      <p><b>日本橋</b>は1911年、装飾は妻木頼黄（重文1999年）。<b>三井本館</b>は1929年（重文1998年）、<b>日本橋三越本店</b>は1935年（重文2016年）。三越の中央ホールには天女像とパイプオルガン、<b>階段の大理石にはアンモナイトの化石</b>が埋まっています。屋上には三囲神社も。</p>
+      <div class="warn">日本橋の上空にはまだ首都高の高架があります。地下化事業は進行中ですが、<b>地下ルート完成は2035年度、高架撤去完了は2040年度の予定</b>。青空が戻るのはまだ先です</div></div>
+    </div>
+    <div class="grp"><span class="gh gh-s">甘い物</span>
+      <div class="it"><span class="nm">榮太樓總本鋪 日本橋本店</span>
+      <p><b>1818年創業</b>、1857年に日本橋の現在地へ。名代<b>金鍔</b>は、幕末に初代が日本橋魚河岸の屋台で売って評判になったもので、今も<b>ごま油を引いた銅板</b>で焼いています。</p>
+      <div class="info">中央区日本橋1-2-5／日本橋駅 徒歩2分／<b>10:00〜18:00・日祝休</b></div>
+      <div class="myth"><b>「梅ぼ志飴」は梅干し味ではありません。</b>棒状の紅い飴を鋏で切って指でつまんだ三角形が<b>皺の寄った梅干しに似ていた</b>ので、江戸っ子が洒落で名付けただけ。中身は普通に甘い飴です</div></div>
+      <div class="it"><span class="nm">千疋屋総本店 日本橋本店 フルーツパーラー</span>
+      <p><b>1834年創業</b>。埼玉・千疋村出身の大島弁蔵が日本橋に「水くわし安うり処」の露店を出したのが始まりで、<b>1868年にフルーツパーラーを開設</b>しました。</p>
+      <div class="info">日本橋室町2-1-2 日本橋三井タワー2F／三越前駅 地下直結／<b>パーラー 11:00〜21:00</b>／千疋屋スペシャルパフェ 3,410円</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="area">
+  <div class="hd"><span class="num">2</span><b>神田・御茶ノ水</b><span>戦災を免れた木造 × 揚げまんじゅう</span></div>
+  <div class="bd">
+    <p class="desc">神田須田町の交差点北西の一角に、<b>木造の飲食店が4軒かたまって残っています</b>。東京大空襲で焼夷弾の直撃を受けず、北の神田川と煉瓦造の高架、南の靖国通りが防火帯として働いたためと考えられています。ただし同じ条件の岩本町周辺は焼けているので、<b>偶然の要素も強い</b>とされます。</p>
+    <div class="fact"><b>よくある誤りを1つ。</b>この一角を「関東大震災も戦災も免れた」と紹介する記事がありますが、<b>これらは全部、1923年の関東大震災の「後」に建てられた震災復興建築です</b>（いせ源1932年、神田まつや1926-27年、ぼたん1929年、竹むら1930年）。正しくは<b>「戦災を免れた」</b>だけ。</div>
+    <div class="grp"><span class="gh gh-b">建物</span>
+      <div class="it"><span class="nm">竹むら／いせ源／神田まつや／ぼたん</span><span class="tag t-tok">東京都選定歴史的建造物</span>
+      <p>4軒とも<b>2001年3月9日に選定</b>。竹むらは<b>入母屋造り・木造3階建て</b>で、屋根と庇で外観が4層に見えます。2階欄干には職人彫りの竹と梅の模様。</p>
+      <div class="warn"><b>かんだやぶそばは、現在は選定されていません。</b>旧店舗は選ばれていましたが、<b>2013年2月の火災で焼失し、同年8月に「滅失のため」選定解除</b>されました。今の建物は2014年再建の鉄骨造です。4軒まとめて「都選定」と書くのは誤りで、<b>4軒目は神田まつや</b>が正解</div></div>
+      <div class="it"><span class="nm">ニコライ堂（東京復活大聖堂）</span><span class="tag t-jyu">重要文化財</span>
+      <p><b>1891年</b>。原設計はロシア人建築家シチュールポフ、<b>実施設計はジョサイア・コンドル</b>（重文1962年）。関東大震災で鐘楼とドームが倒壊し、<b>1929年に岡田信一郎の設計で修復</b>されました ── <b>丸の内の明治生命館と同じ設計者</b>です。この修復でドームは創建時より小さくなっています。</p>
+      <div class="info"><b>拝観献金300円</b>／拝観時間は季節変動（2026年8月は13:00〜16:00）／<b>拝観休止日が多いので公式カレンダーで要確認</b></div></div>
+    </div>
+    <div class="grp"><span class="gh gh-s">甘い物</span>
+      <div class="it"><span class="nm">竹むら</span>
+      <p><b>創業も建築も1930年</b>。名物は<b>揚げまんじゅう</b>。建物そのものが東京都選定歴史的建造物なので、<b>「建物を見ながら甘い物を食べる」がそのまま成立する</b>数少ない店です。</p>
+      <div class="info">千代田区神田須田町1-19／淡路町駅 徒歩3分／<b>火〜土 11:00〜20:00・日月祝休</b>／揚げまんじゅう2個 約500円、白玉クリームあんみつ 910円（あわぜんざいは夏季休止）</div></div>
+      <div class="it"><span class="nm">近江屋洋菓子店 神田店</span>
+      <p>喫茶併設で<b>フリードリンク制</b>という独特の営業。神田淡路町2-4／月〜土 10:00〜19:00、日祝 10:00〜17:30。</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="area">
+  <div class="hd"><span class="num">3</span><b>上野・谷中</b><span>世界遺産 × どら焼きとあんみつ</span></div>
+  <div class="bd">
+    <div class="grp"><span class="gh gh-b">建物</span>
+      <div class="it"><span class="nm">国立西洋美術館 本館</span><span class="tag t-sek">世界遺産</span><span class="tag t-jyu">重要文化財</span>
+      <p><b>1959年・ル・コルビュジエ</b>（重文2007年）。<b>2016年7月に世界遺産登録</b>されましたが、これは単独登録ではなく「<b>ル・コルビュジエの建築作品</b>」という<b>7か国17資産にまたがるシリアル登録</b>の一つ。<b>日本国内の資産はこの本館だけ</b>です。</p>
+      <div class="info">コルビュジエ本人は敷地を見ただけで、実施設計は日本人の弟子3人（前川國男・坂倉準三・吉阪隆正）。「無限成長美術館」の構想に基づく渦巻き状の動線が実現しています<br>9:30〜17:30（金土20:00）／月休／コレクション展 一般500円、<b>18歳未満・65歳以上は無料</b></div></div>
+      <div class="it"><span class="nm">東京国立博物館 本館・表慶館</span><span class="tag t-jyu">ともに重要文化財</span>
+      <p>同じ敷地に<b>明治のネオ・バロック（表慶館・1908年・片山東熊）と昭和の帝冠様式（本館・1937年・渡辺仁）が並ぶ</b>という、日本近代建築の様式変遷が一目で分かる場所です。表慶館は<b>日本初の本格的な美術館建築</b>。</p>
+      <div class="warn"><b>表慶館は特別展・イベント開催時を除いて休館</b>です。2026年8月時点で公開展示はありません。外観だけ見る形になります</div></div>
+      <div class="it"><span class="nm">旧岩崎邸庭園</span><span class="tag t-jyu">重要文化財</span>
+      <p><b>1896年・ジョサイア・コンドル</b>。庭内の<b>撞球室（ビリヤード場）はスイスの山小屋風</b>の木造建築で、洋館とは<b>地下通路でつながっています</b>。コンドルは河鍋暁斎に師事した日本画の弟子でもありました。</p>
+      <div class="info">9:00〜17:00／一般400円／<b>2026年4月下旬まで園地改修工事中、8/17からオンライン日付指定入園券導入</b></div></div>
+    </div>
+    <div class="grp"><span class="gh gh-s">甘い物</span>
+      <div class="it"><span class="nm">うさぎや</span>
+      <p><b>1913年創業</b>。東京三大どら焼きのひとつ（あとは浅草・亀十と東十条・草月。ただし<b>「三大」は通説で公式認定ではありません</b>）。</p>
+      <div class="info">台東区上野1-10-10／上野広小路駅 徒歩3分／<b>9:00〜18:00（販売17:30まで）・水曜休</b>／どら焼き1個240円・<b>限定数終了で早じまいあり</b></div></div>
+      <div class="it"><span class="nm">あんみつ みはし 上野本店</span>
+      <p><b>1948年創業</b>。銀座若松が閉店した今、<b>都心であんみつを食べるならここが第一候補</b>です。</p>
+      <div class="info">台東区上野4-9-7／上野駅すぐ／月〜金 10:30〜21:00、土日 10:30〜19:30／元旦のみ休／あんみつ 600〜700円台</div></div>
+      <div class="it"><span class="nm">廚 くろぎ（PARCO_ya上野 1F）</span>
+      <p>かき氷と蕨もち。<b>10:00〜21:00・年中無休</b>で入りやすい。</p>
+      <div class="warn">かつて<b>東大本郷キャンパス内（隈研吾設計の建物）</b>にあった「廚菓子くろぎ」は2020年に湯島へ移転し、<b>その湯島店も閉店した可能性が高い</b>状況です（食べログは閉店表示、公式の姉妹店一覧にも掲載なし）。上野PARCO_ya店か、芝公園の「くろぎ甘味研究所」が確実です</div></div>
+      <div class="it"><span class="nm">喫茶 古城／珈琲 王城（純喫茶）</span>
+      <p><b>古城</b>（1963年・東上野3-39-10 B1F）は地下にシャンデリアの洋館風空間。<b>王城</b>（1975年・上野6-8-15）は紫色の「王城クリームソーダ」が名物で<b>8:00〜19:00・無休</b>。</p></div>
+      <div class="it"><span class="nm">ひみつ堂（谷中）</span>
+      <p><b>日光の天然氷</b>を手動のかき氷器で削る店。日暮里駅 徒歩4分。<b>7〜9月は20:00まで</b>営業しますが、<b>ピーク時は数時間待ち</b>です。</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="area">
+  <div class="hd"><span class="num">4</span><b>浅草・向島</b><span>江戸唯一の門 × 芋ようかん</span></div>
+  <div class="bd">
+    <div class="grp"><span class="gh gh-b">建物</span>
+      <div class="it"><span class="nm">浅草寺 二天門</span><span class="tag t-jyu">重要文化財</span>
+      <p>1649年頃の建立で、<b>浅草寺の境内で唯一の江戸期建造物</b>（重文1946年）。本堂は1958年の鉄筋コンクリート再建です。</p>
+      <div class="fact"><b>旧本堂は1907年に国宝に指定されていましたが、1945年3月10日の東京大空襲で焼失しました。</b>二天門はもともと「随身門」で、1884年の神仏分離で随身像が浅草神社へ移り、鶴岡八幡宮から二天像が奉納されて名前が変わっています</div></div>
+      <div class="it"><span class="nm">神谷バー</span><span class="tag t-tou">登録有形文化財</span>
+      <p><b>1880年創業の日本初のバー</b>。本館は<b>1921年築</b>で、2011年に国の登録有形文化財に登録されました。名物は「電気ブラン」。甘い物ではありませんが、<b>建物ごと味わうという意味では外せません</b>。</p></div>
+    </div>
+    <div class="grp"><span class="gh gh-s">甘い物</span>
+      <div class="it"><span class="nm">舟和 本店</span>
+      <p><b>1902年創業</b>。芋ようかんは、当時<b>練羊羹が高価で庶民の口に入らなかった</b>ため、浅草の芋問屋だった創業者がさつま芋で代用品として考案したものです。原材料は<b>さつま芋・砂糖・食塩だけ</b>で、着色料も保存料も香料も入っていません。</p>
+      <div class="info">台東区浅草1-22-10／都営浅草駅A4出口／<b>1F 10:00〜19:00、2-3F喫茶室 10:30〜19:00・無休</b>／芋ようかん5本972円</div>
+      <div class="note"><b>「みつ豆ホール」の発祥もここです。</b>1903年、子供のおやつだったみつ豆に色鮮やかなフルーツを盛って出したのが始まり。本店2-3階では今も「元祖みつ豆」が食べられます</div></div>
+      <div class="it"><span class="nm">亀十</span>
+      <p>東京三大どら焼きのひとつ。台東区雷門2-18-11／10:00〜19:00・不定休／360〜400円。大正末期創業。</p></div>
+      <div class="it"><span class="nm">長命寺桜もち 山本や（向島）</span>
+      <p><b>1717年（享保2年）創業</b>。長命寺の門前に住み寺の御用を務めた<b>山本新六</b>が創始したとされ、<b>農林水産省が「東京都の郷土料理」として桜もちを収載</b>しています。</p>
+      <div class="info">墨田区向島5-1-14／<b>8:30〜18:00・月火休</b>／<b>一年中桜もちが買えます</b></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="area">
+  <div class="hd"><span class="num">5</span><b>銀座・築地</b><span>伊東忠太の本堂 × あんぱん発祥</span></div>
+  <div class="bd">
+    <div class="grp"><span class="gh gh-b">建物</span>
+      <div class="it"><span class="nm">築地本願寺</span><span class="tag t-jyu">重要文化財</span>
+      <p><b>1934年・伊東忠太</b>（重文2014年）。伊東はアジア各地を実地調査した建築史家で、<b>古代インドの仏教建築を意匠の主体</b>にしつつ、日本の寺院の空間構成と当時最新の鉄筋コンクリート技術を組み合わせました。</p>
+      <div class="info">館内の<b>階段や柱に動物・怪獣の彫刻</b>が散りばめられています（伊東は妖怪好きで知られる）。堂内にパイプオルガンがあるのも珍しい。<b>参拝無料・本堂6:00〜16:00</b></div></div>
+      <div class="it"><span class="nm">歌舞伎座</span>
+      <p>現在の建物は<b>第五期・2013年開場</b>（隈研吾＋三菱地所設計）で、文化財指定はありません。</p>
+      <div class="fact">面白いのは前の建物の話です。<b>第三期歌舞伎座（1925年・岡田信一郎設計）は2002年に国の登録有形文化財に登録されましたが、建て替えのため2010年に登録が抹消されました。</b>文化財の登録が「解除」される稀なケースです<br><b>5階の歌舞伎座ギャラリーと屋上庭園は入場無料</b>。屋上から大屋根を見下ろすと、瓦の中に<b>1枚だけ逆さの鳳凰</b>が見つけられます</div></div>
+    </div>
+    <div class="grp"><span class="gh gh-s">甘い物</span>
+      <div class="it"><span class="nm">銀座木村家</span>
+      <p><b>1869年創業</b>、<b>1874年に酒種あんぱんを発売</b>。1873年の銀座煉瓦街完成時からこの場所にあります。</p>
+      <div class="info">中央区銀座4-5-7／銀座駅A9出口すぐ／<b>10:00〜20:00・大晦日と元旦のみ休</b>／あんぱん9種 180円〜</div>
+      <div class="fact"><b>4月4日は「あんぱんの日」です。</b>1875年4月4日、明治天皇が向島の水戸藩下屋敷で花見をした際にあんぱんが献上されたことに由来します。桜の塩漬けは<b>奈良・吉野山の八重桜</b>をわざわざ取り寄せたもので、季節感を出すため「へそ」に埋め込みました</div></div>
+      <div class="it"><span class="nm">資生堂パーラー 銀座本店 サロン・ド・カフェ</span>
+      <p>起点は<b>1902年</b>、資生堂薬局内に<b>日本初のソーダファウンテン</b>を開いたこと。当時珍しかったアイスクリームとソーダ水を売り、<b>ソーダ水1杯に化粧水「オイデルミン」1本を景品につけた</b>ら新橋の芸者に人気が出て銀座名物になりました。</p>
+      <div class="info">中央区銀座8-8-3 東京銀座資生堂ビル3F／火〜土 11:00〜21:00、日祝 11:00〜20:00／<b>月曜休</b>／アイスクリーム1,000円、ストロベリーパフェ2,400円</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="area">
+  <div class="hd"><span class="num">6</span><b>四谷・赤坂</b><span>国宝の迎賓館 × たい焼き御三家</span></div>
+  <div class="bd">
+    <p class="desc"><b>このエリアの組み合わせが個人的にいちばん好きです。</b>国宝の迎賓館を見たあと、歩いてたい焼き御三家の一軒に行ける。落差がすごい。</p>
+    <div class="grp"><span class="gh gh-b">建物</span>
+      <div class="it"><span class="nm">迎賓館赤坂離宮</span><span class="tag t-kok">国宝</span>
+      <p><b>1909年・片山東熊</b>（旧東宮御所）。<b>明治以降の文化財として初の国宝</b>で、<b>明治期の建築では唯一の国宝</b>です（2009年指定）。国宝の範囲は本館だけでなく、正門から本館へ向かう<b>左右の旧衛士詰所も対象</b>。</p>
+      <div class="info">10:00〜17:00／<b>原則水曜休</b>＋接遇による臨時休館あり（直前に要確認）／<b>本館・庭園は個人（19名以下）なら予約不要・当日受付可</b>／本館＋庭園1,500円、庭園のみ300円<br><b>和風別館を含むコースは事前予約必須</b>（2,000円）</div></div>
+      <div class="it"><span class="nm">国会議事堂</span>
+      <p>1920年着工、<b>17年かけて1936年完成</b>。中央塔の高さ65.45m。<b>建築材料はほぼすべて国産で統一</b>されました（広島県倉橋島、山口県黒髪島などの花崗石）。</p>
+      <div class="info"><b>参観無料</b>。参議院は平日<b>毎正時9:00〜16:00</b>開始・約60分・<b>9名以下は予約不要</b>。本会議開催時は中止</div></div>
+    </div>
+    <div class="grp"><span class="gh gh-s">甘い物</span>
+      <div class="it"><span class="nm">たいやき わかば</span>
+      <p><b>1953年創業</b>、たい焼き御三家の一軒。<b>一丁焼き（天然物）</b>です。</p>
+      <div class="info">新宿区若葉1-10／JR四ツ谷駅 徒歩5分／9:30〜18:30ごろ・日曜休／190円／<b>売り切れ次第終了</b>／※営業時間は資料により差があるため要確認</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="area">
+  <div class="hd"><span class="num">7</span><b>麻布・白金台</b><span>アール・デコ × 豆大福とたい焼き</span></div>
+  <div class="bd">
+    <div class="grp"><span class="gh gh-b">建物</span>
+      <div class="it"><span class="nm">東京都庭園美術館（旧朝香宮邸）</span><span class="tag t-jyu">重要文化財</span>
+      <p><b>1933年</b>、宮内省内匠寮の設計、<b>内装デザインはフランスのアンリ・ラパン</b>（重文2015年）。朝香宮夫妻がパリ滞在中に<b>1925年のアール・デコ博覧会</b>に感銘を受けて建てた邸宅で、<b>日本に現存する本格的アール・デコ建築の代表例</b>です。</p>
+      <div class="info">正面玄関に<b>ルネ・ラリックのガラスレリーフ扉</b>。<b>建物そのものが展示品</b>で、年に1度「建物公開展」も開催されます<br>10:00〜18:00／月曜休／展覧会により料金変動・<b>庭園のみは200円</b></div></div>
+    </div>
+    <div class="grp"><span class="gh gh-s">甘い物</span>
+      <div class="it"><span class="nm">浪花家総本店（麻布十番）</span>
+      <p><b>1909年創業</b>、たい焼き御三家の筆頭。<b>一丁焼き</b>。</p>
+      <div class="info">港区麻布十番1-8-14／<b>11:00〜19:00・火曜＋第3水曜休</b>／持ち帰り180円・店内200円／2Fにカフェあり</div>
+      <div class="myth"><b>「およげ！たいやきくん」のモデル</b>とよく言われますが、正確には<b>アニメに登場する「たいやきおじさん」のモデルが3代目・神戸守一</b>。<b>歌詞のモデルは別</b>で、作詞の高田ひろおは「練馬駅近くで見かけたたい焼きから着想した」と証言しています</div></div>
+      <div class="it"><span class="nm">松島屋（高輪）</span>
+      <p><b>1918年創業</b>、東京三大豆大福の一軒。<b>昭和天皇が皇太子時代に豆大福を好み、侍従が皇居から買いに来た</b>と伝わります。</p>
+      <div class="info">港区高輪1-5-25／泉岳寺駅・白金高輪駅 徒歩5分／<b>9:30〜15:00・売り切れ次第終了</b>／日曜＋月2回程度の月曜休／<b>1日約1,000個が午前中に完売することも。電話予約推奨</b></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="area">
+  <div class="hd"><span class="num">8</span><b>目白・護国寺</b><span>ライトの明日館 × 三大豆大福</span></div>
+  <div class="bd">
+    <div class="grp"><span class="gh gh-b">建物</span>
+      <div class="it"><span class="nm">自由学園明日館</span><span class="tag t-jyu">重要文化財</span>
+      <p><b>中央棟・西教室棟は1922年、フランク・ロイド・ライト設計</b>（東教室棟と講堂は弟子の遠藤新。重文1997年・4棟）。</p>
+      <div class="note"><b>ここは「建物を見ながら甘い物」がいちばんきれいに成立する場所です。</b>ライトが設計した部屋で<b>コーヒーとお菓子を味わいながら見学できます</b>（<b>喫茶付見学1,000円</b>／建物見学のみ500円）。<b>毎月第3金曜は夜間見学18:00〜21:00</b>（お酒付1,200円）。予約不要<br>結婚式場やコンサート会場としても現役で使われている、<b>動態保存のモデルケース</b>です</div>
+      <div class="info">10:00〜16:00（最終入館15:30）／月曜休／中学生以下無料</div></div>
+    </div>
+    <div class="grp"><span class="gh gh-s">甘い物</span>
+      <div class="it"><span class="nm">群林堂（護国寺）</span>
+      <p><b>1916年創業</b>、東京三大豆大福の筆頭とされます。<b>予約不可・通販なし・当日製造当日販売</b>という潔さ。</p>
+      <div class="info">文京区音羽2-1-2／護国寺駅5番出口 徒歩1分／<b>9:30〜17:00・日月休</b>／<b>開店15分前で10人ほどの行列、15時頃に完売することも</b></div></div>
+      <div class="it"><span class="nm">志むら（目白）</span>
+      <p><b>1939年創業</b>の和菓子店。夏は<b>かき氷</b>が行列必至（約1,750円）。JR目白駅 徒歩1分／喫茶9:30〜17:30／日曜・月曜不定休。</p></div>
+    </div>
+  </div>
+</div>
+
+<h3>番外 ── 少し離れているけれど</h3>
+<ul class="pl">
+<li><b>旧古河庭園（駒込）</b>── 1917年・<b>ジョサイア・コンドル</b>の洋館と洋風庭園、日本庭園は七代目小川治兵衛。国指定名勝（2006年）。<b>コンドルの現存作品3件（旧岩崎邸・旧古河邸・ニコライ堂）のうち2件が都立庭園になっています</b>。庭園150円＋洋館は別途500円（ガイドツアー800円）</li>
+<li><b>船橋屋（亀戸天神前）</b>── <b>1805年創業</b>のくず餅。テイクアウト9:00〜18:00、イートイン11:00〜17:00</li>
+<li><b>瑞穂（原宿）</b>── 東京三大豆大福の一軒。<b>9:00〜12:00</b>という短さで、休日は午前中に完売。1個249円／日月休</li>
+</ul>
+
+<h2><span class="n">4</span>甘い物の豆知識</h2>
+<div class="card">
+<h3 style="margin-top:0">たい焼きに「天然」と「養殖」がある</h3>
+<div class="tw">
+<table>
+<colgroup><col style="width:20%"><col style="width:40%"><col style="width:40%"></colgroup>
+<thead><tr><th>　</th><th>一丁焼き ＝ 天然物</th><th>連式（鉄板型）＝ 養殖物</th></tr></thead>
+<tbody>
+<tr><td>焼き型</td><td>取っ手付きの鋳物型で<b>1匹ずつ</b></td><td>1枚の鉄板に5〜6匹分の型、<b>まとめて焼く</b></td></tr>
+<tr><td>手間</td><td><b>2kg超</b>の型を1つずつ返す重労働</td><td>効率的・大量生産向き</td></tr>
+<tr><td>仕上がり</td><td>高温で焼くので<b>皮がカリッと薄い</b></td><td>ふんわり厚め</td></tr>
+</tbody>
+</table>
+</div>
+<p class="desc">語源は鯛の「<b>一本釣り</b>」にかけた洒落で、<b>味の優劣ではなく製法の違い</b>です。御三家（浪花家・柳屋・わかば）はいずれも一丁焼き。<br>
+面白いのは、<b>「天然物」という言葉自体はかなり新しい</b>こと。<b>2002年の宮嶋康彦『たい焼の魚拓』が初出</b>とされていて、江戸以来の伝統用語ではありません。</p>
+</div>
+
+<ul class="pl">
+<li><b>関東の「くず餅」に葛は一切入っていません。</b>船橋屋のくず餅は<b>小麦澱粉を約450日間、乳酸菌発酵</b>させたもの。関西の「葛餅」（葛粉使用・透明）とは<b>まったく別の食べ物</b>です。しかも<b>消費期限は2日</b>しかありません</li>
+<li><b>「みつ豆ホール」は1903年、浅草の舟和が始めました。</b>子供のおやつだったみつ豆に、色鮮やかなフルーツを盛って出したのが最初です</li>
+<li><b>あんみつは1930年、銀座若松の2代目・森半次郎が考案しました。</b>みつ豆に自家製こし餡をのせたもの。ただし<b>その若松は2023年末に閉店</b>しています</li>
+<li><b>桜もちと芋ようかんは、農林水産省が「東京都の郷土料理」として公式に収載</b>しています（あとは串だんご）。意外に少ない</li>
+<li><b>豆大福もどら焼きも「三大」は誰も認定していません。</b>通説です。ただし群林堂・松島屋・瑞穂の3軒はいずれも午前〜昼で売り切れる実力店なので、<b>結果的に序列は当たっています</b></li>
+</ul>
+
+<h2><span class="n">5</span>建物の見方 ── 「重要文化財」と「国宝」と「登録」は別物です</h2>
+<div class="tw">
+<table>
+<colgroup><col style="width:24%"><col style="width:20%"><col style="width:56%"></colgroup>
+<thead><tr><th>種別</th><th>この資料での例</th><th>意味</th></tr></thead>
+<tbody>
+<tr class="pick"><td><b>国宝</b></td><td>迎賓館赤坂離宮</td><td>重要文化財のうち特に価値が高いもの。<b>迎賓館は明治以降で初、かつ明治期の建築では唯一</b>（2009年）</td></tr>
+<tr><td><b>重要文化財</b></td><td>東京駅、日銀、明治生命館、築地本願寺、明日館 ほか</td><td>国が指定。<b>明治生命館は昭和期の建造物として初</b>（1997年）</td></tr>
+<tr><td><b>世界遺産</b></td><td>国立西洋美術館 本館</td><td>7か国17資産の<b>シリアル登録</b>の一部。日本国内はこの1件だけ</td></tr>
+<tr><td><b>登録有形文化財</b></td><td>神谷バー</td><td>指定より緩やかな「登録」制度。<b>解除されることもある</b>（旧歌舞伎座は2010年に抹消）</td></tr>
+<tr><td><b>東京都選定<br>歴史的建造物</b></td><td>竹むら、いせ源、神田まつや、ぼたん</td><td>東京都景観条例に基づき知事が選定。<b>2026年3月時点で111件</b>、これまでに16件が解除。愛称「東京歴建」</td></tr>
+<tr><td><b>指定なし</b></td><td>三菱一号館、歌舞伎座</td><td>三菱一号館は<b>2009年の復元建築</b>のため対象外。「復元されたら文化財ではない」</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2><span class="n">6</span>予約が要るもの・要らないもの</h2>
+<div class="tw">
+<table>
+<colgroup><col style="width:30%"><col style="width:22%"><col style="width:48%"></colgroup>
+<thead><tr><th>　</th><th>予約</th><th>詳細</th></tr></thead>
+<tbody>
+<tr class="pick"><td><b>日本銀行 本店見学</b></td><td style="color:#a8443a;font-weight:800">必須</td><td><b>希望日の90日前10:00から先着</b>。無料・約1時間・各回20〜22名・小学5年生以上</td></tr>
+<tr><td>迎賓館（和風別館コース）</td><td style="color:#a8443a;font-weight:800">必須</td><td>2,000円。<b>本館・庭園だけなら19名以下は予約不要</b></td></tr>
+<tr><td>国会議事堂（参議院）</td><td style="color:#5d7a55;font-weight:800">不要</td><td><b>9名以下は予約不要</b>。平日毎正時9:00〜16:00、無料</td></tr>
+<tr><td>自由学園明日館</td><td style="color:#5d7a55;font-weight:800">不要</td><td>喫茶付見学1,000円。10名以上の団体のみ要問合せ</td></tr>
+<tr><td>明治生命館</td><td style="color:#5d7a55;font-weight:800">不要</td><td>入館無料・9:30〜19:00</td></tr>
+<tr><td>松島屋（豆大福）</td><td style="color:#b06a1e;font-weight:800">推奨</td><td>1日約1,000個が午前中に完売することも。<b>電話予約推奨</b></td></tr>
+<tr><td>群林堂（豆大福）</td><td style="color:#a8443a;font-weight:800">不可</td><td><b>予約不可・通販なし</b>。並ぶしかありません</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2><span class="n">7</span>俗説の答え合わせ</h2>
+<div class="tw">
+<table>
+<colgroup><col style="width:38%"><col style="width:14%"><col style="width:48%"></colgroup>
+<thead><tr><th>よく聞く話</th><th>判定</th><th>実際は</th></tr></thead>
+<tbody>
+<tr><td>たい焼きに天然物と養殖物がある</td><td style="color:#5d7a55;font-weight:800">◯ 本当</td><td>一丁焼き vs 鉄板。ただし呼び方は2002年の書籍が初出</td></tr>
+<tr><td>4月4日はあんぱんの日</td><td style="color:#5d7a55;font-weight:800">◯ 本当</td><td>1875年4月4日、向島での花見に献上されたことに由来</td></tr>
+<tr><td>東京駅の十二支は8支しかない</td><td style="color:#5d7a55;font-weight:800">◯ 本当</td><td>子・卯・午・酉が意図的に外されている</td></tr>
+<tr><td>神田須田町は震災も戦災も免れた</td><td style="color:#a8443a;font-weight:800">✕ 半分誤り</td><td><b>震災の「後」に建った建物</b>。免れたのは戦災だけ</td></tr>
+<tr><td>かんだやぶそばは都選定の歴史的建造物</td><td style="color:#a8443a;font-weight:800">✕ 現在は違う</td><td>2013年の火災で焼失し、同年に選定解除された</td></tr>
+<tr><td>梅ぼ志飴は梅干し味</td><td style="color:#a8443a;font-weight:800">✕ 誤り</td><td>形が梅干しに似ているだけ。普通に甘い飴</td></tr>
+<tr><td>関東のくず餅は葛でできている</td><td style="color:#a8443a;font-weight:800">✕ 誤り</td><td>小麦澱粉を450日発酵させたもの。葛は不使用</td></tr>
+<tr><td>「およげ！たいやきくん」の歌詞は浪花家がモデル</td><td style="color:#a8443a;font-weight:800">✕ 俗説</td><td>アニメの「おじさん」のモデルではあるが、歌詞は別</td></tr>
+<tr><td>日銀本店は上空から「円」の字に見える</td><td style="color:#b06a1e;font-weight:800">△ 公式否定なし</td><td>日銀公式に記述なし。当時の表記は「圓」で偶然説が有力</td></tr>
+<tr><td>三菱一号館は重要文化財</td><td style="color:#a8443a;font-weight:800">✕ 誤り</td><td>2009年の復元建築なので<b>文化財指定なし</b></td></tr>
+<tr><td>銀座若松であんみつが食べられる</td><td style="color:#a8443a;font-weight:800">✕ 閉店</td><td>2023年12月30日閉店。あんみつなら「みはし」へ</td></tr>
+<tr><td>浅草アンヂェラスの梅ダッチコーヒー</td><td style="color:#a8443a;font-weight:800">✕ 閉店</td><td>2019年3月17日閉店</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2><span class="n">8</span>行く前のチェックリスト</h2>
+<ul class="pl">
+<li><b>甘い物の時間から決める。</b>豆大福は午前中、たい焼きは売り切れ次第終了。建物は夕方まで開いています</li>
+<li><b>日銀の見学は90日前から先着。</b>行きたいなら最初に押さえる</li>
+<li><b>迎賓館は原則水曜休</b>＋接遇による臨時休館があるので、直前に公式で確認</li>
+<li><b>竹むらは日・月・祝が休み。</b>神田須田町の一角は月曜に行くと軒並み閉まっています</li>
+<li><b>群林堂・松島屋・瑞穂は日曜と月曜が休み</b>（瑞穂は9:00〜12:00のみ）。豆大福は平日の午前が正解</li>
+<li><b>表慶館は特別展のとき以外は閉まっています。</b>外観だけになる前提で</li>
+<li><b>明治生命館の情報は更新してください。</b>2025年11月から平日も無料公開になりました。「土日のみ」と書いてある記事は古いです</li>
+<li>日本橋の上に首都高があるのは<b>2040年度まで</b>。「青空の日本橋」を期待しないこと</li>
+</ul>
+
+<footer>
+<p><b>主な出典</b></p>
+<div class="src">
+<a href="https://online.bunka.go.jp/">文化庁 文化遺産オンライン</a>｜
+<a href="https://www.tokyostationcity.com/learning/station_building/">東京ステーションシティ 丸の内駅舎</a>｜
+<a href="https://www.boj.or.jp/about/services/kengaku.htm">日本銀行 本店見学</a>｜
+<a href="https://mimt.jp/about/">三菱一号館美術館</a>｜
+<a href="https://prtimes.jp/main/html/rd/p/000000001.000173103.html">明治生命館 リニューアル</a>｜
+<a href="https://www.geihinkan.go.jp/en/akasaka/visit/">迎賓館赤坂離宮</a>｜
+<a href="https://www.tokyo-park.or.jp/park/kyu-iwasaki-tei/index.html">旧岩崎邸庭園</a>｜
+<a href="https://www.nmwa.go.jp/jp/about/building.html">国立西洋美術館 本館</a>｜
+<a href="https://www.tnm.jp/">東京国立博物館</a>｜
+<a href="https://www.shutoko.jp/ss/nihonbashi-tikaka/overview/">首都高 日本橋区間地下化事業</a>｜
+<a href="https://nikolaido.org/">ニコライ堂</a>｜
+<a href="https://tsukijihongwanji.jp/">築地本願寺</a>｜
+<a href="https://www.teien-art-museum.ne.jp/visit/">東京都庭園美術館</a>｜
+<a href="https://jiyu.jp/tour/">自由学園明日館</a>｜
+<a href="https://www.tokyo-park.or.jp/park/kyu-furukawa/index.html">旧古河庭園</a>｜
+<a href="https://with-tokyorekiken.metro.tokyo.lg.jp/tokyo-rekiken/">東京都 With!東京歴建PROJECT</a>｜
+<a href="https://with-tokyorekiken.metro.tokyo.lg.jp/rekiken/911/">同 竹むら</a>｜
+<a href="https://www.senso-ji.jp/guide/guide11.html">浅草寺 二天門</a>｜
+<a href="https://www.shochiku.co.jp/play/theater/kabukiza/ginza-kabukiza/gallery/">歌舞伎座ギャラリー</a>｜
+<a href="https://www.sangiin.go.jp/japanese/taiken/bochou/kengaku.html">参議院 参観案内</a>｜
+<a href="https://www.kimuraya-sohonten.co.jp/anpan0404">木村屋總本店 あんぱんの日</a>｜
+<a href="https://funawa.jp/fr/83">舟和 芋ようかんの歴史</a>｜
+<a href="https://www.funabashiya.co.jp/products/policy02.php">船橋屋 製法へのこだわり</a>｜
+<a href="https://www.eitaro.com/ame/">榮太樓 榮太樓飴</a>｜
+<a href="https://parlour.shiseido.co.jp/history/">資生堂パーラーの歴史</a>｜
+<a href="https://www.sembikiya.co.jp/touch-2">千疋屋の歴史</a>｜
+<a href="https://sakura-mochi.com/">長命寺桜もち 山本や</a>｜
+<a href="https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/area/tokyo.html">農水省 うちの郷土料理（東京都）</a>｜
+<a href="https://ja.wikipedia.org/wiki/%E3%81%9F%E3%81%84%E7%84%BC%E3%81%8D">たい焼き（天然物・養殖物）</a>｜
+<a href="https://getnews.jp/archives/3466862">銀座若松 閉店</a>｜
+<a href="https://mrs.living.jp/tokyo/newopen/article/3413188">アンヂェラス 閉店</a>｜
+<a href="http://himitsudo.com/">ひみつ堂</a>
+</div>
+<p style="margin-top:16px"><b style="color:#2e2a25">版：2026-08-13</b><br>
+営業時間・料金・休館日は変わります。とくに<b>甘い物の店は売り切れ次第終了・不定休が多い</b>ので、行く前に必ず各公式サイトか電話で確認してください。<b>俗説・未確認の事項はそのように明記しました。</b></p>
+</footer>
+
+</div>
+</body>
+</html>
